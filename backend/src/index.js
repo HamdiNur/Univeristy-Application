@@ -7,6 +7,8 @@ const morgan = require('morgan')
 
 // Routes
 const authRoutes = require('./routes/auth.routes')
+const universityRoutes = require('./routes/university.routes')  // 👈 add
+const programRoutes = require('./routes/program.routes')  // 👈 add
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -18,6 +20,9 @@ app.use(morgan('dev'))
 
 // ── Routes ──
 app.use('/api/auth', authRoutes)
+app.use('/api/auth', authRoutes)
+app.use('/api/universities', universityRoutes)  //
+app.use('/api/programs', programRoutes)  // 👈 add
 
 // ── Health Check ──
 app.get('/', (req, res) => {
