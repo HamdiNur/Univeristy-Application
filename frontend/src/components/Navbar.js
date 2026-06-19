@@ -29,21 +29,19 @@ export default function Navbar() {
 
           {/* Auth Buttons */}
           <div className="flex items-center gap-3">
-            {user ? (
-              <>
-                <Link href="/dashboard" className="flex items-center gap-1 text-gray-600 hover:text-blue-600 font-medium">
-                  <LayoutDashboard size={18} />
-                  Dashboard
-                </Link>
-                <button
-                  onClick={logout}
-                  className="flex items-center gap-1 text-gray-600 hover:text-red-500 font-medium"
-                >
-                  <LogOut size={18} />
-                  Logout
-                </button>
-              </>
-            ) : (
+           {user ? (
+  <>
+    <Link href={user.role === 'ADMIN' ? '/admin' : '/dashboard'} 
+      className="flex items-center gap-1 text-gray-600 hover:text-blue-600 font-medium">
+      <LayoutDashboard size={18} />
+      Dashboard
+    </Link>
+    <button onClick={logout} className="flex items-center gap-1 text-gray-600 hover:text-red-500 font-medium">
+      <LogOut size={18} />
+      Logout
+    </button>
+  </>
+) : (
               <>
                 <Link href="/login" className="text-gray-600 hover:text-blue-600 font-medium">
                   Login
