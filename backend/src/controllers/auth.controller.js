@@ -90,5 +90,25 @@ const getMe = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch user.' })
   }
 }
+// PATCH /api/auth/profile
+const updateProfile = async (req, res) => {
+  try {
+    const { fullName, phone, nationality } = req.body
 
-module.exports = { register, login, getMe }
+    const result = await pool.query(`
+      UPDATE users
+      SET full_name = COALESCE($1, full_name),
+          phone = COALESCE($2, phone),
+          nationality = COALESCE($3, nationality),
+          updated_at = NOW()
+      WHERE id = $4
+      RETURNING id, full_name, email, role, phone, nationality, is_verified, created_at
+    `, [fullName, phone, nationality, req.user.id])
+
+    res.json({ message: 'Profile updated!', user: result.rows[0] })
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update profile.' })
+  }
+}
+
+module.exports = { register, login, getMe,updateProfile }
