@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import api from '@/lib/api'
@@ -24,7 +24,7 @@ const categoryIcons = {
   EDUCATION: '📚', ARCHITECTURE: '🏛️', OTHER: '📖',
 }
 
-export default function ProgramsPage() {
+function ProgramsContent() {
   const searchParams = useSearchParams()
   const [programs, setPrograms] = useState([])
   const [loading, setLoading] = useState(true)
@@ -117,7 +117,22 @@ export default function ProgramsPage() {
         </div>
 
         {loading ? (
-          <div className="text-center py-20 text-gray-500">Loading programs...</div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="bg-white rounded-2xl border border-gray-100 p-6 animate-pulse">
+                <div className="h-5 bg-gray-200 rounded-full w-32 mb-3" />
+                <div className="h-5 bg-gray-200 rounded w-3/4 mb-2" />
+                <div className="h-4 bg-gray-100 rounded w-1/2 mb-4" />
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="h-4 bg-gray-100 rounded w-16" />
+                  <div className="h-4 bg-gray-100 rounded w-20" />
+                </div>
+                <div className="pt-4 mt-4 border-t border-gray-100">
+                  <div className="h-4 bg-gray-200 rounded w-24" />
+                </div>
+              </div>
+            ))}
+          </div>
         ) : programs.length === 0 ? (
           <div className="text-center py-20 text-gray-500">No programs found.</div>
         ) : (
@@ -170,5 +185,13 @@ export default function ProgramsPage() {
         )}
       </div>
     </div>
+  )
+}
+
+export default function ProgramsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-gray-500">Loading...</div>}>
+      <ProgramsContent />
+    </Suspense>
   )
 }
