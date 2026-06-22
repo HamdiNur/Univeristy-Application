@@ -106,7 +106,7 @@ uni-apply/
 git clone https://github.com/HamdiNur/Univeristy-Application.git
 cd Univeristy-Application
 ```
-
+//
 ### 2. Backend setup
 ```bash
 cd backend
